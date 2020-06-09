@@ -1,0 +1,1544 @@
+{
+	"info": {
+		"_postman_id": "4c585711-8531-47d6-8565-4c5be90b476c",
+		"name": "Arun-Automation-Careweb Part1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SuperUser Auth",
+			"item": [
+				{
+					"name": "Get Auth token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "23846b6b-587d-417d-a1d2-86c38f27b79c",
+								"exec": [
+									"pm.test('Set Access Token Variables', function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.collectionVariables.set('bearerheader', 'bearer ' + jsonData.access_token);\r",
+									"});\r",
+									"console.log(\"succesfully verified token\")"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJraWQiOiJNb2RBRFQzaklUMTlHd3JHMmNIRTZzaEVkR2hDVzJNNmp0RnZmT1dwZXhZPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI0MWQwOGU3Zi00NmFlLTQzZWUtYjVhNi1hYjVkNDQxOTgyYTQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmV1LXdlc3QtMS5hbWF6b25hd3MuY29tXC9ldS13ZXN0LTFfZ1R0UGpUc2RzIiwicGVybWlzc2lvbiI6InVzZXIudXBkYXRlIiwiY29nbml0bzp1c2VybmFtZSI6ImNvZ25pdG90ZXN0IiwiYXVkIjoiMWMycWs4ZDloYjJjbGVyajNzdDRhbzZuOWwiLCJldmVudF9pZCI6IjUzM2ZiYWUzLWJkY2UtNDA0Ny04OTZlLTQ1NGJkYTk5ZjhiNyIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNTcyNjE1ODU3LCJQZXJtaXNzaW9uIjoidXNlci5jcmVhdGUiLCJleHAiOjE1NzI2MTk0NTcsImlhdCI6MTU3MjYxNTg1NywiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.WfJng-I3q3OV9CDKEspKJtGz7j2s5hCvvqGb1hiZQZLPB1hAiV2raBBfsM2m2TmGyxJb1UBBHsom9mTGjCw2fRZWtnM8lZCEYFC-PeCAxGHH_gQExvMI2zUuajoX7IA4gzdMdB_8n0s0tbkX2rdx-8i7EY1Tb5WNA3Iz4B5_rZc3bs7EFrhhH5tYxgx3e4VYnBQMgoDsG5X7EZlY-PCFtlDaOD_9Z2UJyAt3d_mNCOjH8nOUAlbBrLC1J8yfeqwcxrBztpKnFJgWJoLLGV4XTIa9ILhXHtlt2P19_JQxtPXDtL5BZED5yQPzHh4AyVF4ZmZJQHlNE1VIS26qpv1oHA",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Username\": \"{{username}}\",\n    \"Password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/token",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserByEmailAddress",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d64750d2-1168-4bc0-a864-f2ea7b563f77",
+								"exec": [
+									"pm.test(\"Verify Status code is 200 to ensure exists \", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"if(\r",
+									"pm.test(\"Ensure this user is super user\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"http://ahc.careweb.api/claims/superuser\");\r",
+									"})){\r",
+									"    console.log(\"This is super user\")\r",
+									"} else{\r",
+									"    console.log(\"This is not a superuser\")\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearerheader}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"emailaddress\": \"test@test.com\",\n    \"name\":\"test user\",\n    \"username\":\"user\\\\test\",\n    \"claims\":\n    {\n    \t\"\":\"\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/users/{{username}}",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users",
+								"{{username}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "Get Clients",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "982bb15e-98b6-4c1e-9ea6-7f31f4c463ca",
+								"exec": [
+									"pm.test(\"Body matches string is Arun\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Arun\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"jsonData = JSON.parse(responseBody)\r",
+									"\r",
+									"for (var i = 0; i < jsonData.length; i++) {\r",
+									"    var currentRecord = jsonData[i];\r",
+									"    if (currentRecord.forename === \"Arun\" && currentRecord.surname == \"Nambiar\" ) {\r",
+									"        console.log(currentRecord.client_code)\r",
+									"        console.log(\"Identified Client Successfully for =\" +\" \"+ currentRecord.forename)\r",
+									"        pm.collectionVariables.set(\"ClientID\", currentRecord.client_code);\r",
+									"    }\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{bearerheader}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseurl}}/organisations/1/teams/{{TeamID}}/Clients",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"organisations",
+								"1",
+								"teams",
+								"{{TeamID}}",
+								"Clients"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "LookUp",
+			"item": [
+				{
+					"name": "DailyLivingCategory",
+					"item": [
+						{
+							"name": "CreateDailyLivingCategory",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "86b356ef-ef7f-42d7-bf2f-0367b84263ec",
+										"exec": [
+											"var DLC_ID = responseBody\r",
+											"pm.collectionVariables.set(\"DailyLivingCategoryID\", DLC_ID);\r",
+											"\r",
+											"\r",
+											"pm.test(\"Status code is 201: Created Daily Living category\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"category\": \"{{DailyLivingCategoryName}}\",\r\n  \"organisation_id\": 1,\r\n  \"is_system_owned\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/lookups/1",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"lookups",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetDailyLivingCategoryById",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "1f134036-aeef-4503-9e2f-4c110b4d5076",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches above created daily living cateogory\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"DailyLivingCategoryName\"));\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Verify the Active option is TRUE\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.active).to.eql(true);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/lookups/1/{{DailyLivingCategoryID}}",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"lookups",
+										"1",
+										"{{DailyLivingCategoryID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "RiskCategory",
+					"item": [
+						{
+							"name": "CreateRiskCategory",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "deb406b4-b2b9-47bb-bb1c-18e79ab299f7",
+										"exec": [
+											"var RC_ID = responseBody\r",
+											"pm.collectionVariables.set(\"RiskCategoryID\", RC_ID);\r",
+											"\r",
+											"\r",
+											"pm.test(\"Status code is 201: Created Risk category\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"category\": \"{{RiskCategoryName}}\",\r\n  \"organisation_id\": 1,\r\n  \"is_system_owned\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/lookups/2",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"lookups",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetRiskCategoryById",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e5944171-8efa-4391-ae09-2405283c14e6",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches above created Risk cateogory\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"RiskCategoryID\"));\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Verify the Active option is TRUE\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.active).to.eql(true);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/lookups/2/{{RiskCategoryID}}",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"lookups",
+										"2",
+										"{{RiskCategoryID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Reasons",
+					"item": [
+						{
+							"name": "CreateReason",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c00c1d07-6508-4ca4-9822-c226f2be432f",
+										"exec": [
+											"var Reason_ID = responseBody\r",
+											"pm.collectionVariables.set(\"ReasonCategoryID\", Reason_ID);\r",
+											"\r",
+											"\r",
+											"pm.test(\"Status code is 201: Created Reason category\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"category\":\"{{ReasonCategoryName}}\",\n\t\"also_requires_text\": false\n}"
+								},
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/lookups/3",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"lookups",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetReasonById",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e30b987e-283d-4626-ab87-1c7ae3cfe8a1",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches above created Reason cateogory\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"ReasonCategoryName\"));\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Verify the Active option is TRUE\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.active).to.eql(true);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/lookups/3/{{ReasonCategoryID}}",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"lookups",
+										"3",
+										"{{ReasonCategoryID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Records",
+			"item": [
+				{
+					"name": "ClientCareNeeds",
+					"item": [
+						{
+							"name": "AddCareNeed",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e8c8a230-e0c2-4824-972d-bff43428c447",
+										"exec": [
+											"pm.test(\"Status code is 201: Care Need record created succesfully.\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"var CareNeedRecordID =responseBody\r",
+											"pm.collectionVariables.set(\"CareNeedRecordID\", CareNeedRecordID);\r",
+											"console.log(\"Care Need record created succesfully with id :\" +\" \"+CareNeedRecordID )"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{bearerheader}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"current_situation\": \"{{CareNeedCurrentSituation}}\",\r\n    \"description_of_need\": \"{{CareNeedDescription}}\",\r\n    \"summary\": \"{{CareNeedSummary}}\",\r\n    \"daily_living_category_lookup_id\": {{DailyLivingCategoryID}}\r\n}\r\n"
+								},
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/clients/{{ClientID}}/records/types/2",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"clients",
+										"{{ClientID}}",
+										"records",
+										"types",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetRecordById",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c2cdd223-00f7-453e-9e48-4f7ed1f124e2",
+										"exec": [
+											"pm.test(\"Status code is 200: CareNeed Found succesfully using ID\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response Contains created_by_username= Simon (superuser name)\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Simon\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verify CareNeed status is ACTIVE \", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.active).to.eql(true);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Ensure that the careneed record is not Edited \", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.edited).to.eql(null);\r",
+											"    \r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches above created CareNeed summary\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"CareNeedSummary\"));\r",
+											"    console.log(\"Found the CareNeed record with summary :-\"+\" \"+ pm.collectionVariables.get(\"CareNeedSummary\"))\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/clients/{{ClientID}}/records/types/2/{{CareNeedRecordID}}",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"clients",
+										"{{ClientID}}",
+										"records",
+										"types",
+										"2",
+										"{{CareNeedRecordID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetRecordsByClientId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4a010b33-2d27-4dee-bed2-591ecbf75c2c",
+										"exec": [
+											"summary=pm.collectionVariables.get(\"CareNeedSummary\");\r",
+											"\r",
+											"pm.test(\"Client shows: Care need having summary : \"+ \" \"+summary, function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"CareNeedSummary\")); \r",
+											"    \r",
+											"    });"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/clients/{{ClientID}}/records/types/2",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"clients",
+										"{{ClientID}}",
+										"records",
+										"types",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "ClientGoals",
+					"item": [
+						{
+							"name": "AddGoal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e87d569c-05d3-48b3-9147-f00a30d7e9c4",
+										"exec": [
+											"pm.test(\"Status code is 201 : Goal is created succesfully\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"var GoalID= responseBody\r",
+											"console.log(\"Goal created succesfully with id :\" +\" \"+GoalID )\r",
+											"\r",
+											"pm.collectionVariables.set(\"GoalID\", GoalID);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{bearerheader}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"{{GoalDescription}}\",\r\n    \"goal_status\": 1,\r\n    \"target_date\": \"2020-05-29T14:46:43.468359\",\r\n    \"target_date_required\": true,\r\n    \"goal\": \"{{GoalDetail}}\",\r\n\t\"related_care_need_ids\" :[{{CareNeedRecordID}}]\r\n\t\r\n\t\r\n}\r\n"
+								},
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/clients/{{ClientID}}/records/types/4",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"clients",
+										"{{ClientID}}",
+										"records",
+										"types",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetRecordById",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "74bf126a-96d8-4e14-8fcc-ba5838438fa3",
+										"exec": [
+											"pm.test(\"Status code is 200: Goal Found succesfully using ID\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response Contains created_by_username= Simon (superuser name)\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Simon\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verify Goal status is ACTIVE \", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.active).to.eql(true);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Ensure that the Goal record is not Edited\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.edited).to.eql(null);\r",
+											"    \r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches above created Goal detail\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"GoalDetail\"));\r",
+											"    console.log(\"Found the Goal record with summary :-\"+\" \"+ pm.collectionVariables.get(\"GoalDetail\"))\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/clients/{{ClientID}}/records/types/4/{{GoalID}}",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"clients",
+										"{{ClientID}}",
+										"records",
+										"types",
+										"4",
+										"{{GoalID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetRecordsByClientId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "7bdb1cf6-d694-4a37-b901-aa3524cee027",
+										"exec": [
+											"GoalDetails=pm.collectionVariables.get(\"GoalDetail\");\r",
+											"\r",
+											"pm.test(\"Client shows: Goal having details : \"+ \" \"+ GoalDetails, function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"GoalDetail\")); \r",
+											"    \r",
+											"    });"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/clients/{{ClientID}}/records/types/4",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"clients",
+										"{{ClientID}}",
+										"records",
+										"types",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "ClientRiskRecords",
+					"item": [
+						{
+							"name": "AddRisk",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "451c4562-0041-4ebc-a8ec-af8f558641e1",
+										"exec": [
+											"pm.test(\"Status code 201: Risk record created.\", function () {\r",
+											"    pm.response.to.have.status(\"Created\");\r",
+											"});\r",
+											"\r",
+											"var RiskRecordID = responseBody\r",
+											"pm.collectionVariables.set(\"RiskID\", RiskRecordID);\r",
+											"\r",
+											"console.log(\"Risk record created succesfully with id :\" +\" \"+RiskRecordID )"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{bearerheader}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"action_plan\": \"{{RiskActionPlan}}\",\r\n    \"description\": \"{{RiskDescription}}\",\r\n    \"detail_of_risk\": \"{{RiskDetail}}\",\r\n    \"risk_category_lookup_id\": {{RiskCategoryID}},\r\n    \"start_of_risk\": \"{{RiskStartDate}}\",\r\n    \"end_of_risk\":\"{{RiskEndDate}}\"\r\n}"
+								},
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/clients/{{ClientID}}/records/types/3",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"clients",
+										"{{ClientID}}",
+										"records",
+										"types",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetRecordById",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "31b0ecc6-200d-4db9-a66a-43dd9b021145",
+										"exec": [
+											"pm.test(\"Status code is 200: Risk Found succesfully using ID\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response Contains created_by_username= Simon (superuser name)\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Simon\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verify RIsk status is ACTIVE \", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.active).to.eql(true);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Ensure that the Risk record is not Edited\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.edited).to.eql(null);\r",
+											"    \r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches above created Risk detail\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"RiskDetail\"));\r",
+											"    console.log(\"Found the Goal record with summary :-\"+\" \"+ pm.collectionVariables.get(\"RiskDetail\"))\r",
+											"});\r",
+											"pm.test(\"Verify the Above created Risk ID is retrieved.\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"RiskID\"));\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/clients/{{ClientID}}/records/types/3/{{RiskID}}",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"clients",
+										"{{ClientID}}",
+										"records",
+										"types",
+										"3",
+										"{{RiskID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetRecordsByClientId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "486d445f-0012-45dc-a41d-4467dfc359af",
+										"exec": [
+											"RiskDetails=pm.collectionVariables.get(\"RiskDetail\");\r",
+											"\r",
+											"pm.test(\"Client Timeline shows: Risk having details : \"+ \" \"+ RiskDetails, function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"RiskDetail\")); \r",
+											"    \r",
+											"    });"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/clients/{{ClientID}}/records/types/3",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"clients",
+										"{{ClientID}}",
+										"records",
+										"types",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "ClientTextRecords",
+					"item": [
+						{
+							"name": "AddClientTextRecord",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "29b72279-44a2-49a1-a62c-73f48e9212a3",
+										"exec": [
+											"pm.test(\"Status code is 201: Text record created succesfully.\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"var TextID =responseBody\r",
+											"pm.collectionVariables.set(\"TextRecordID\", TextID);\r",
+											"console.log(\"Daily record(Text record) created succesfully with id :\" +\" \"+TextID )"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{bearerheader}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"text\":\"{{TextRecordData}}\",\n  \"related_goal_ids\": [{{GoalID}}]\n}"
+								},
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/clients/{{ClientID}}/records/types/1",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"clients",
+										"{{ClientID}}",
+										"records",
+										"types",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetClientTextRecordById",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "96029dd5-700e-4fa9-a2e4-132cffece1b5",
+										"exec": [
+											"pm.test(\"Status code is 200: Text Record Found succesfully using ID\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response Contains created_by_username= Simon (superuser name)\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Simon\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verify Text Record status is ACTIVE \", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.active).to.eql(true);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Ensure that the Text record is not Edited\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.edited).to.eql(null);\r",
+											"    \r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches above created Text Record data\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"TextRecordData\"));\r",
+											"    console.log(\"Found the Text record :-\"+\" \"+ pm.collectionVariables.get(\"TextRecordData\"))\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/clients/{{ClientID}}/records/types/1/{{TextRecordID}}",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"clients",
+										"{{ClientID}}",
+										"records",
+										"types",
+										"1",
+										"{{TextRecordID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetClientTimelineRecords",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5143c3c8-83b9-4ab3-8c4f-d3336473c5e0",
+										"exec": [
+											"\r",
+											"  TextData=pm.collectionVariables.get(\"TextRecordData\")\r",
+											"\r",
+											"pm.test(\"Client Timeline shows Text Record datails :\"+ TextData, function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"TextRecordData\"));\r",
+											"    console.log(\"Found the Text record :-\"+\" \"+ pm.collectionVariables.get(\"TextRecordData\"))\r",
+											"});\r",
+											"\r",
+											"Summay=pm.collectionVariables.get(\"CareNeedSummary\");\r",
+											"\r",
+											"pm.test(\"Client Timeline shows: Care need having summary : \"+ \" \"+Summay, function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"CareNeedSummary\")); \r",
+											"    \r",
+											"    });\r",
+											"\r",
+											"\r",
+											"GoalDetails=pm.collectionVariables.get(\"GoalDescription\");\r",
+											"\r",
+											"pm.test(\"Client Timeline shows: Goal having details : \"+ \" \"+ GoalDetails, function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"GoalDescription\")); \r",
+											"        });\r",
+											"        \r",
+											"RiskDetails=pm.collectionVariables.get(\"RiskDescription\");\r",
+											"\r",
+											"pm.test(\"Client Timeline shows: Risk having details : \"+ \" \"+ RiskDetails, function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"RiskDescription\")); \r",
+											"    \r",
+											"    });\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{bearerheader}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseurl}}/organisations/1/clients/{{ClientID}}/timeline?limit=1000",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"organisations",
+										"1",
+										"clients",
+										"{{ClientID}}",
+										"timeline"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1000"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "50c9461d-9af8-4b34-a54f-29085efba76a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c7b744a5-abdf-4d62-8310-965973660184",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "c7809a8a-872b-4e6c-a8a4-511aa5b56c39",
+			"key": "baseurl",
+			"value": "https://api.dev.staffplancloud.oneadvanced.io",
+			"type": "string"
+		},
+		{
+			"id": "769d0e98-d832-427b-ae62-60c4de598aaf",
+			"key": "bearerheader",
+			"value": "bearer eyJraWQiOiJaVGlqRHJtd05VSEQ1QXRxR2xUZkNMWCs5QjJSTW1lc2Y3ZlN3Z080QW1ZPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIzZTg1ZjkwOC1iZDk4LTQ1ZGItODQwNi1lNzMzNzgwNDU3YTEiLCJodHRwOlwvXC9haGMuY2FyZXdlYi5hcGlcL2NsYWltc1wvYWNjZXNzLWNsaWVudHMiOiIxIiwiaHR0cDpcL1wvYWhjLmNhcmV3ZWIuYXBpXC9jbGFpbXNcL2FjY2Vzc3Jvc3RlcnRlYW0iOiIxOjk0fDE6MTA1fDE6MTA2fDE6MTA3fDE6MTA4fDE6MTA5fDE6MTEwfDE6MTExfDE6MTIzfDE6MTI0fDE6MTI2fDE6MTI5fDE6MTMwfDE6MTMxfDE6MTMyfDE6MTMzfDE6MTM0fDE6MTM1fDE6MTM2fDE6MTM3fDE6MTM4fDE6MTM5fDE6MTQwfDE6MTQxfDE6MTQyIiwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmV1LXdlc3QtMi5hbWF6b25hd3MuY29tXC9ldS13ZXN0LTJfYVFORmRMbjJIIiwiaHR0cDpcL1wvYWhjLmNhcmV3ZWIuYXBpXC9jbGFpbXNcL3ZvaWQtY2FyZWl0ZW0tcmVjb3JkIjoidHJ1ZSIsImh0dHA6XC9cL2FoYy5jYXJld2ViLmFwaVwvY2xhaW1zXC92b2lkLW93bi1kYWlseS1yZWNvcmQiOiJUcnVlIiwiaHR0cDpcL1wvYWhjLmNhcmV3ZWIuYXBpXC9jbGFpbXNcL3ZpZXd1c2VycyI6IjEiLCJhdXRoX3RpbWUiOjE1OTEzNjYwOTQsImh0dHA6XC9cL2FoYy5jYXJld2ViLmFwaVwvY2xhaW1zXC9lbWFpbGFkZHJlc3MiOiJzdXBlcnVzZXJjYXJld2ViQGNhcmV3ZWJhcGkuY29tIiwiZXhwIjoxNTkxMzY5Njk0LCJpYXQiOjE1OTEzNjYwOTQsImVtYWlsIjoic3VwZXJ1c2VyY2FyZXdlYkBjYXJld2ViYXBpLmNvbSIsImh0dHA6XC9cL2FoYy5jYXJld2ViLmFwaVwvY2xhaW1zXC9hZGQtZWRpdC1jYXJlaXRlbS1yZWNvcmQiOiJ0cnVlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImh0dHA6XC9cL2FoYy5jYXJld2ViLmFwaVwvY2xhaW1zXC91c2VybmFtZSI6IlNpbW9uIiwiaHR0cDpcL1wvYWhjLmNhcmV3ZWIuYXBpXC9jbGFpbXNcL3Jvc3Rlci1jb25uZWN0aW9uLXN0cmluZyI6IjM1RDdBMDZCRUY3MERFODI3OEYxQUY4NURGQzc5NzYzQzZCRUQwODVCQjVBMEQ5RTlBN0JCMThEQTZGMEIwNzciLCJjb2duaXRvOnVzZXJuYW1lIjoic3VwZXJ1c2VyY2FyZXdlYkBjYXJld2ViYXBpLmNvbSIsImh0dHA6XC9cL2FoYy5jYXJld2ViLmFwaVwvY2xhaW1zXC9lZGl0LWRhaWx5LXJlY29yZCI6IlRydWUiLCJodHRwOlwvXC9haGMuY2FyZXdlYi5hcGlcL2NsYWltc1wvYWRkLWVkaXQtb3duLWRhaWx5LXJlY29yZCI6IlRydWUiLCJhdWQiOiIza2c3Y2VxM2o4MDN1dmx1dG02cDJ1am41MiIsImh0dHA6XC9cL2FoYy5jYXJld2ViLmFwaVwvY2xhaW1zXC9zdXBlcnVzZXIiOiJ0cnVlIiwiZXZlbnRfaWQiOiI5ODQzNTQwZC0yYTcyLTQ5ZWEtYjhiOC04OGY2NjJhYjQwNWQiLCJ0b2tlbl91c2UiOiJpZCIsImh0dHA6XC9cL2FoYy5jYXJld2ViLmFwaVwvY2xhaW1zXC91c2VyaWQiOiIxIiwiaHR0cDpcL1wvYWhjLmNhcmV3ZWIuYXBpXC9jbGFpbXNcL29yZ2FuaXNhdGlvbiI6IjEifQ.1PZ4FDw3MFp28AbuFjbtiZi747G8T6jrpF9hzthj_3t_3qsiAQyComd0ELp9JxY9L05O5XUTvtTDp2-7iv5TdkmhN1awISRN9CVG1dAFPhXIsz1322zlYqKI3Q_cpFbx-f5l1qhfo6zLFHTG88RxZI1bne_bl05heWGperaJgadyj_XmNojh83DodTpdQNJEXzRhIIwhWxA5rC7FAavaCC1ToAUUyXpUYu2I6jSrwcTmq8L9HhigVH58XxxZrqxuDG5lA-BgqVCgGQ_5DyaypuNwYWL87uzqEIOOQ_B64PyQlolDbpiv-Zp-gDKkmwa1of0pkGS-_GOjMqF3HqeLVw",
+			"type": "string"
+		},
+		{
+			"id": "55b96516-74aa-4503-9635-b2ad7130b1ba",
+			"key": "username",
+			"value": "superusercareweb@carewebapi.com",
+			"type": "string"
+		},
+		{
+			"id": "b7643676-a805-4407-9bbf-16a2aceb742b",
+			"key": "password",
+			"value": "Transm1t!",
+			"type": "string"
+		},
+		{
+			"id": "79263a53-0fe8-422d-8988-277a80e8fd95",
+			"key": "TeamID",
+			"value": "129",
+			"type": "string"
+		},
+		{
+			"id": "2bfdb3b7-634f-4a3f-a736-b40cec0be9bd",
+			"key": "ClientID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "7f83546b-fc9b-4aee-9f11-43125540afd3",
+			"key": "DailyLivingCategoryName",
+			"value": "Category#1",
+			"type": "string"
+		},
+		{
+			"id": "d2d3a250-62a4-4320-894e-0655682ae547",
+			"key": "DailyLivingCategoryID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "953e997c-a69a-446c-8121-f0377f4bbb2f",
+			"key": "RiskCategoryName",
+			"value": "Category#2",
+			"type": "string"
+		},
+		{
+			"id": "4826d021-41d4-4a6c-af82-2964b3041bad",
+			"key": "RiskCategoryID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "99b8ad7d-c870-4832-a6b2-429f17f1a6ec",
+			"key": "ReasonCategoryName",
+			"value": "Category#3",
+			"type": "string"
+		},
+		{
+			"id": "c23cbf1a-8cb6-43f9-a9d2-24f7455ef41f",
+			"key": "ReasonCategoryID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "49536089-125a-42ad-ac0d-de4753405098",
+			"key": "CareNeedCurrentSituation",
+			"value": "CARENEEDCurrent situation #1",
+			"type": "string"
+		},
+		{
+			"id": "bf3183ac-e9bf-4a37-a757-8aeba2da628e",
+			"key": "CareNeedSummary",
+			"value": "CARENEED summary #1",
+			"type": "string"
+		},
+		{
+			"id": "884d285b-ab24-483b-b31a-ee8f22338d82",
+			"key": "CareNeedRecordID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "53f97875-00f3-4ae6-b1b2-006c1253b602",
+			"key": "GoalDescription",
+			"value": "GOAL descritpion#1",
+			"type": "string"
+		},
+		{
+			"id": "85387d8c-400f-4126-8ce6-463f9f46a8aa",
+			"key": "GoalDetail",
+			"value": "GOAL detail#1",
+			"type": "string"
+		},
+		{
+			"id": "3a57a89d-3c3e-4688-8bd2-5e782ae3c07c",
+			"key": "GoalID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "ab3b4178-2bec-416f-8002-3dfdf588e8c8",
+			"key": "RiskDescription",
+			"value": "Risk description#1",
+			"type": "string"
+		},
+		{
+			"id": "b26ed4f2-bf9a-42bb-9639-2aaadf80c3dd",
+			"key": "RiskDetail",
+			"value": "Risk detail#1",
+			"type": "string"
+		},
+		{
+			"id": "2394ac32-6ab5-49c7-98c6-c9e7e4eae7af",
+			"key": "RiskActionPlan",
+			"value": "Risk actionplan#1",
+			"type": "string"
+		},
+		{
+			"id": "43d54b0e-d812-485f-9a23-cc1c323e27d3",
+			"key": "RiskStartDate",
+			"value": "2020-03-19",
+			"type": "string"
+		},
+		{
+			"id": "d80dac57-6ce4-4e24-8b79-9b4ce6719afc",
+			"key": "RiskEndDate",
+			"value": "2020-10-10",
+			"type": "string"
+		},
+		{
+			"id": "0240045f-9d0c-48b7-9e20-4583602129a6",
+			"key": "RiskID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "c3ed6b20-3a3e-40cf-b31f-19f8944c7a1d",
+			"key": "TextRecordData",
+			"value": "Daily record from script#1",
+			"type": "string"
+		},
+		{
+			"id": "cb552a1e-9b39-4c1e-bad6-0d3dfc874d6e",
+			"key": "TextRecordID",
+			"value": "150",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
